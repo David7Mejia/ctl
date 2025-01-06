@@ -1,0 +1,25 @@
+.featured-images-container {
+  display: flex;
+  /* flex-direction: row-reverse; */
+  margin-top: 10px;
+  justify-content: space-between;
+  max-height: 618px;
+}
+
+.featured-img-link-0 {
+  width: 63%;
+}
+
+.featured-img-link-1 {
+  max-height: 618px;
+  object-fit: cover;
+}
+
+.featured-prod-image-1 {
+  width: 63% !important;
+}
+
+.featured-prod-image-0 {
+  width: 37% !important;
+  object-fit: cover;
+}

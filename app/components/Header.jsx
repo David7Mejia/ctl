@@ -2,12 +2,17 @@ import {Suspense} from 'react';
 import {Await, NavLink, useAsyncValue} from '@remix-run/react';
 import {useAnalytics, useOptimisticCart} from '@shopify/hydrogen';
 import {useAside} from '~/components/Aside';
-
+import useWidth from '../Hooks/useWidth';
+import useScrollY from '../Hooks/useScrollY';
+import cn from 'classnames';
+// import {useLocation} from 'react-router';
 /**
  * @param {HeaderProps}
  */
 export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
   const {shop, menu} = header;
+   const width = useWidth();
+   const useScroll = useScrollY();
   return (
     <header className="header">
       <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>

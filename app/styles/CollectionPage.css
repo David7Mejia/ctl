@@ -1,0 +1,204 @@
+.collection-grid,
+.collection-grid-search {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.collection-path-holder {
+  display: flex;
+  align-items: center;
+}
+
+.product-row {
+  flex: 0 0 24%;
+}
+.collection-path-dash {
+  margin: 0;
+  padding: 0 0.5rem;
+  font-size: 12px;
+}
+.path-count-holder {
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  font-family: 'Antarctica-Light', Arial, Helvetica, sans-serif;
+  font-weight: 300;
+  letter-spacing: 2.16px;
+}
+
+.collection-path-name {
+  color: #ccc !important;
+}
+
+.collection-path-name::hover {
+  color: black;
+}
+
+.collection-path-items {
+  font-size: 12px;
+  font-family: 'Antarctica-Light', Arial, Helvetica, sans-serif;
+  font-weight: 500;
+  letter-spacing: 2.16px;
+  margin: 0;
+  color: black;
+  text-decoration: none;
+}
+
+.collection-main-name {
+  display: flex;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 300;
+  font-family: 'Antarctica-Light', Arial, Helvetica, sans-serif;
+  line-height: 24px;
+  letter-spacing: 1.8px;
+}
+
+/*
+
+
+
+
+
+.collection-name-container {
+  max-height: 76px;
+  height: 100%;
+  margin-bottom: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+.collection-main-name {
+  font-size: 18px;
+  font-weight: 300;
+  font-family: 'Antarctica-Light', Arial, Helvetica, sans-serif;
+  line-height: 24px;
+  letter-spacing: 1.8px;
+}
+
+.product-item {
+  width: 100%;
+  height: fit-content;
+  max-height: 550px;
+  object-fit: cover;
+  /* max-height: 510px; */
+/* } */
+
+/* .collection-grid > .product-item:not(.fifth_image) {
+  grid-row: span 1;
+}
+
+.fifth_image {
+  height: 100%;
+  max-height: 1090px !important;
+  grid-column: 3;
+  grid-row: 1 / span 2;
+}
+
+.lg_img {
+  height: 100%;
+  max-height: 1087px;
+}
+
+
+/*
+
+/*  */
+
+.small-product-title {
+  margin: 0;
+  text-decoration: none !important;
+  color: black;
+}
+
+.product-price-col {
+  text-decoration: none !important;
+  color: black;
+}
+
+.item-info-container {
+  margin-top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 40px;
+  font-family: 'Antarctica-Light', Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  letter-spacing: 1.4px;
+  padding: 0 5px 0 0;
+  text-decoration: none !important;
+}
+.sm_img {
+  height: 550px;
+}
+
+.sm_img img {
+  max-height: 510px;
+}
+/* Define your root variables at the top of your CSS file if needed */
+
+.lg_img {
+  width: 100%; /* or specific width */
+  height: auto; /* for maintaining aspect ratio */
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.lg_img img {
+  max-height: 1065px !important;
+}
+.collection-product {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* max-height: 550px; */
+  text-decoration: none !important;
+}
+
+.collection-product img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.section {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 columns for items */
+  grid-template-rows: auto auto; /* 2 rows */
+  grid-gap: var(--grid-row-gap) var(--grid-column-gap); /* Vertical and horizontal gap */
+  margin-bottom: var(
+    --vertical-spacing-four-products-per-row
+  ); /* Space between sections */
+  column-gap: 10px;
+  row-gap: 5px;
+  margin: 5px, 0, 5px, 0;
+}
+
+/* Default styling for all product items */
+.product-item {
+  /* Shared styles for each product */
+}
+
+.section-1 {
+  background-color: red;
+  height: 1148px;
+}
+/* Section-specific adjustments */
+.section-1 .product-item:nth-child(3),
+.section-2 .product-item:nth-child(1) {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+/* Adjustments for sections with no large image */
+.section-3 {
+  grid-template-columns: repeat(
+    4,
+    1fr
+  ); /* Still 4 columns but only single-row items */
+}

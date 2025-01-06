@@ -1,0 +1,53 @@
+.collections-grid {
+}
+
+.collection-item {
+  display: flex;
+  height: 600px;
+  background-color: rgba(0, 0, 0, 0.2); /* Red semi-transparent background */
+}
+
+.collection-item img {
+  height: 100%;
+  object-fit: cover;
+
+  transform: scale(1); /* Start with no scaling */
+  transition: transform 0.8s cubic-bezier(0.215, 0.61, 0.355, 1),
+    /* Smooth scaling transition */ opacity 0.8s
+      cubic-bezier(0.215, 0.61, 0.355, 1); /* Smooth opacity transition */
+
+  opacity: 1; /* Become visible */
+  pointer-events: auto; /* Enables mouse events when visible */
+}
+
+.collection-item img:hover {
+  transform: scale(1.1); /* Scale the image to 110% of its original size */
+}
+.collection-item-container {
+  overflow: hidden;
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.collection-overlay {
+  transition: transform 0.8s cubic-bezier(0.215, 0.61, 0.355, 1),
+    opacity 0.8s ease;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2); /* Red semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+}
+
+.all-collections-title {
+  display: flex;
+  justify-content: center;
+  font-size: 14px;
+}
