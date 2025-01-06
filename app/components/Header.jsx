@@ -1,5 +1,5 @@
-import {Suspense} from 'react';
-import {Await, NavLink, useAsyncValue} from '@remix-run/react';
+import {Suspense, useEffect} from 'react';
+import {Await, NavLink, useAsyncValue, useLocation} from '@remix-run/react';
 import {useAnalytics, useOptimisticCart} from '@shopify/hydrogen';
 import {useAside} from '~/components/Aside';
 import useWidth from '../Hooks/useWidth';
@@ -11,20 +11,51 @@ import cn from 'classnames';
  */
 export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
   const {shop, menu} = header;
-   const width = useWidth();
-   const useScroll = useScrollY();
+  const width = useWidth();
+  const useScroll = useScrollY();
+  const location = useLocation();
+  const currentPath = location.pathname;
+  useEffect(() => {}, [currentPath]);
   return (
-    <header className="header">
-      <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
-        <strong>{shop.name}</strong>
-      </NavLink>
-      <HeaderMenu
-        menu={menu}
-        viewport="desktop"
-        primaryDomainUrl={header.shop.primaryDomain.url}
-        publicStoreDomain={publicStoreDomain}
-      />
-      <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
+    <header
+      className={cn('header', {
+        header_alt: useScroll !== 0,
+        not_home: currentPath !== '/',
+      })}
+    >
+      {/* left */}
+      <div className="nav-left-container">
+        <HeaderMenu
+          menu={menu}
+          viewport="desktop"
+          primaryDomainUrl={header.shop.primaryDomain.url}
+          publicStoreDomain={publicStoreDomain}
+        />
+        <div className="is-mobile">
+          <HeaderMenuMobileToggle />
+          <SearchToggle />
+        </div>
+      </div>
+      {/* center */}
+      <div className="shop-name-container">
+        <NavLink
+          prefetch="intent"
+          to="/"
+          className={cn('header-shop-title', {
+            shop_title_alt: useScroll !== 0,
+            not_home_title: currentPath !== '/',
+          })}
+          end
+        >
+          {shop.name}
+          {/* {width <= 749 ? 'CTL' : shop.name} */}
+        </NavLink>
+      </div>
+      {/* right */}
+
+      <div className="nav-right-container">
+        <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
+      </div>
     </header>
   );
 }
@@ -43,20 +74,30 @@ export function HeaderMenu({
   viewport,
   publicStoreDomain,
 }) {
+  const useScroll = useScrollY();
+  const location = useLocation();
+  const currentPath = location.pathname;
   const className = `header-menu-${viewport}`;
   const {close} = useAside();
 
+  function closeAside(event) {
+    if (viewport === 'mobile') {
+      event.preventDefault();
+      window.location.href = event.currentTarget.href;
+    }
+  }
   return (
     <nav className={className} role="navigation">
       {viewport === 'mobile' && (
         <NavLink
           end
-          onClick={close}
+          onClick={closeAside}
           prefetch="intent"
-          style={activeLinkStyle}
+          // style={activeLinkStyle}
           to="/"
+          className="mobile-home-link"
         >
-          Home
+          HOME
         </NavLink>
       )}
       {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
@@ -71,12 +112,15 @@ export function HeaderMenu({
             : item.url;
         return (
           <NavLink
-            className="header-menu-item"
+            className={cn('header-link header-menu-item', {
+              scrolled_header_link: useScroll !== 0,
+              not_home_item: currentPath !== '/',
+            })}
             end
             key={item.id}
-            onClick={close}
+            onClick={closeAside}
             prefetch="intent"
-            style={activeLinkStyle}
+            // style={activeLinkStyle}
             to={url}
           >
             {item.title}
@@ -91,40 +135,85 @@ export function HeaderMenu({
  * @param {Pick<HeaderProps, 'isLoggedIn' | 'cart'>}
  */
 function HeaderCtas({isLoggedIn, cart}) {
+  const useScroll = useScrollY();
+  const location = useLocation();
+  const currentPath = location.pathname;
+
   return (
     <nav className="header-ctas" role="navigation">
-      <HeaderMenuMobileToggle />
-      <NavLink prefetch="intent" to="/account" style={activeLinkStyle}>
+      {/* <HeaderMenuMobileToggle /> */}
+      <NavLink
+        prefetch="intent"
+        to="/account"
+        className={cn('header-link sign-in-nav nav-icon', {
+          scrolled_header_link: useScroll !== 0,
+          scrolled_sign_in_nav: useScroll !== 0,
+          not_home_sign_in: currentPath !== '/',
+        })}
+      >
         <Suspense fallback="Sign in">
           <Await resolve={isLoggedIn} errorElement="Sign in">
-            {(isLoggedIn) => (isLoggedIn ? 'Account' : 'Sign in')}
+            {/* {(isLoggedIn) => (isLoggedIn ? 'Account' : 'Sign in')} */}
           </Await>
         </Suspense>
       </NavLink>
-      <SearchToggle />
+      <div className="is-desktop">
+        <SearchToggle />
+      </div>
+
       <CartToggle cart={cart} />
     </nav>
   );
 }
 
 function HeaderMenuMobileToggle() {
-  const {open} = useAside();
+  // const {open} = useAside();
+  // return (
+  //   <button
+  //     className="header-menu-mobile-toggle reset"
+  //     onClick={() => open('mobile')}
+  //   >
+  //     <h3>☰</h3>
+  //   </button>
+  // );
+
+  const location = useLocation();
+  const currentPath = location.pathname;
+  const useScroll = useScrollY();
+
   return (
-    <button
-      className="header-menu-mobile-toggle reset"
-      onClick={() => open('mobile')}
-    >
-      <h3>☰</h3>
-    </button>
+    <a className="header-menu-mobile-toggle" href="#mobile-menu-aside">
+      <h3
+        className={cn('mobile-hamburger', {
+          scrolled_ham: useScroll !== 0,
+          not_home_ham: currentPath !== '/',
+        })}
+      >
+        ☰
+      </h3>
+    </a>
   );
 }
 
 function SearchToggle() {
-  const {open} = useAside();
+  // const {open} = useAside();
+  // return (
+  //   <button className="reset" onClick={() => open('search')}>
+  //     Search
+  //   </button>
+  // );
+  const location = useLocation();
+  const currentPath = location.pathname;
+  const useScroll = useScrollY();
   return (
-    <button className="reset" onClick={() => open('search')}>
-      Search
-    </button>
+    <a
+      className={cn('header-link nav-search nav-icon', {
+        scrolled_header_link: useScroll !== 0,
+        scrolled_search_nav: useScroll !== 0,
+        not_home_search: currentPath !== '/',
+      })}
+      href="#search-aside"
+    ></a>
   );
 }
 
@@ -132,26 +221,55 @@ function SearchToggle() {
  * @param {{count: number | null}}
  */
 function CartBadge({count}) {
-  const {open} = useAside();
-  const {publish, shop, cart, prevCart} = useAnalytics();
-
+  const location = useLocation();
+  const currentPath = location.pathname;
+  const useScroll = useScrollY();
   return (
-    <a
-      href="/cart"
-      onClick={(e) => {
-        e.preventDefault();
-        open('cart');
-        publish('cart_viewed', {
-          cart,
-          prevCart,
-          shop,
-          url: window.location.href || '',
-        });
-      }}
-    >
-      Cart {count === null ? <span>&nbsp;</span> : count}
-    </a>
+    <div>
+      <a
+        id="nav-bag"
+        className={cn('header-link bag-container', {
+          scrolled_header_link: useScroll !== 0,
+        })}
+        href="#cart-aside"
+      >
+        {/* <div
+          className={cn('bag-count', {
+            not_home_bag_count: currentPath !== '/',
+          })}
+        >
+          {count}
+        </div> */}
+        <p
+          className={cn('nav-icon nav-bag', {
+            scrolled_bag_nav: useScroll !== 0,
+            not_home_bag: currentPath !== '/',
+          })}
+        ></p>
+      </a>
+    </div>
   );
+  // <a href="#cart-aside">Cart {count}</a>;
+  // const {open} = useAside();
+  // const {publish, shop, cart, prevCart} = useAnalytics();
+
+  // return (
+  //   <a
+  //     href="/cart"
+  //     onClick={(e) => {
+  //       e.preventDefault();
+  //       open('cart');
+  //       publish('cart_viewed', {
+  //         cart,
+  //         prevCart,
+  //         shop,
+  //         url: window.location.href || '',
+  //       });
+  //     }}
+  //   >
+  //     Cart {count === null ? <span>&nbsp;</span> : count}
+  //   </a>
+  // );
 }
 
 /**
@@ -159,9 +277,12 @@ function CartBadge({count}) {
  */
 function CartToggle({cart}) {
   return (
-    <Suspense fallback={<CartBadge count={null} />}>
+    <Suspense fallback={<CartBadge count={0} />}>
       <Await resolve={cart}>
-        <CartBanner />
+        {(cart) => {
+          if (!cart) return <CartBadge count={0} />;
+          return <CartBadge count={cart.totalQuantity || 0} />;
+        }}
       </Await>
     </Suspense>
   );
