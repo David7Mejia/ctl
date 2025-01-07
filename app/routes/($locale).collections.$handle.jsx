@@ -236,6 +236,13 @@ const PRODUCT_ITEM_FRAGMENT = `#graphql
       width
       height
     }
+    collections(first: 1) {
+      nodes {
+        id
+        title
+        handle
+      }
+    }
     priceRange {
       minVariantPrice {
         ...MoneyProductItem

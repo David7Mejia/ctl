@@ -1,5 +1,5 @@
 import {defer} from '@shopify/remix-oxygen';
-import {useLoaderData} from '@remix-run/react';
+import {useLoaderData, useNavigate} from '@remix-run/react';
 import {
   getSelectedProductOptions,
   Analytics,
@@ -11,7 +11,12 @@ import {
 import {ProductPrice} from '~/components/ProductPrice';
 import {ProductImage} from '~/components/ProductImage';
 import {ProductForm} from '~/components/ProductForm';
-
+import {Swiper, SwiperSlide, useSwiper} from 'swiper/react';
+import {Autoplay, Navigation} from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import useWidth from '../Hooks/useWidth';
+import {Link} from '@remix-run/react';
 /**
  * @type {MetaFunction<typeof loader>}
  */
@@ -103,44 +108,69 @@ export default function Product() {
   const {title, descriptionHtml} = product;
 
   return (
-    <div className="product">
-      <ProductImage image={selectedVariant?.image} />
-      <div className="product-main">
-        <h1>{title}</h1>
-        <ProductPrice
-          price={selectedVariant?.price}
-          compareAtPrice={selectedVariant?.compareAtPrice}
-        />
-        <br />
-        <ProductForm
-          productOptions={productOptions}
-          selectedVariant={selectedVariant}
-        />
-        <br />
-        <br />
-        <p>
-          <strong>Description</strong>
-        </p>
-        <br />
-        <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
-        <br />
+    <>
+      <div className="path-count-holder">
+        <div className="collection-path-holder">
+          <Link to={'/'} className="collection-path-items">
+            HOME
+          </Link>
+          <p className="collection-path-dash">/</p>
+
+          <Link
+            to={`/collections/${product?.collections?.nodes[0]?.title}`}
+            className="collection-path-items "
+          >
+            {product?.collections?.nodes[0]?.title?.toUpperCase()}
+          </Link>
+          <p className="collection-path-dash">/</p>
+
+          <p
+            // to={`/collections/${product?.collections?.nodes[0]?.title}`}
+            className="collection-path-items product-path-name"
+          >
+            {product?.title?.toUpperCase()}
+          </p>
+        </div>
       </div>
-      <Analytics.ProductView
-        data={{
-          products: [
-            {
-              id: product.id,
-              title: product.title,
-              price: selectedVariant?.price.amount || '0',
-              vendor: product.vendor,
-              variantId: selectedVariant?.id || '',
-              variantTitle: selectedVariant?.title || '',
-              quantity: 1,
-            },
-          ],
-        }}
-      />
-    </div>
+      <div className="product">
+        <ProductImage image={selectedVariant?.image} product={product} />
+        <div className="product-main">
+          <h1>{title}</h1>
+          <ProductPrice
+            price={selectedVariant?.price}
+            compareAtPrice={selectedVariant?.compareAtPrice}
+          />
+          <br />
+          <ProductForm
+            productOptions={productOptions}
+            selectedVariant={selectedVariant}
+          />
+          <br />
+          <br />
+          <p>
+            <strong>Description</strong>
+          </p>
+          <br />
+          <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
+          <br />
+        </div>
+        <Analytics.ProductView
+          data={{
+            products: [
+              {
+                id: product.id,
+                title: product.title,
+                price: selectedVariant?.price.amount || '0',
+                vendor: product.vendor,
+                variantId: selectedVariant?.id || '',
+                variantTitle: selectedVariant?.title || '',
+                quantity: 1,
+              },
+            ],
+          }}
+        />
+      </div>
+    </>
   );
 }
 
@@ -231,6 +261,13 @@ const PRODUCT_QUERY = `#graphql
   ) @inContext(country: $country, language: $language) {
     product(handle: $handle) {
       ...Product
+      collections(first: 1) {
+        nodes {
+          id
+          title
+          handle
+        }
+      }
     }
   }
   ${PRODUCT_FRAGMENT}
