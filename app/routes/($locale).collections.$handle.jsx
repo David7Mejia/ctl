@@ -8,7 +8,8 @@ import {
 } from '@shopify/hydrogen';
 import {useVariantUrl} from '~/lib/variants';
 import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
-
+import '../styles/CollectionPage.css';
+import cn from 'classnames';
 /**
  * @type {MetaFunction<typeof loader>}
  */
@@ -38,7 +39,7 @@ async function loadCriticalData({context, params, request}) {
   const {handle} = params;
   const {storefront} = context;
   const paginationVariables = getPaginationVariables(request, {
-    pageBy: 8,
+    pageBy: 10,
   });
 
   if (!handle) {
@@ -79,7 +80,25 @@ export default function Collection() {
 
   return (
     <div className="collection">
-      <h1>{collection.title}</h1>
+      <div className="path-count-holder">
+        <div className="collection-path-holder">
+          <Link to={'/'} className="collection-path-items">
+            HOME
+          </Link>
+          <p className="collection-path-dash">/</p>
+
+          <p to={'/'} className="collection-path-items collection-path-name">
+            {collection?.title?.toUpperCase()}
+          </p>
+        </div>
+        <div className="collection-count-holder">
+          {collection?.products?.nodes?.length} ITEMS
+        </div>
+      </div>
+
+      <h1 className="collection-main-name">
+        {collection?.title?.toUpperCase()}
+      </h1>
       <p className="collection-description">{collection.description}</p>
       <PaginatedResourceSection
         connection={collection.products}
@@ -105,34 +124,98 @@ export default function Collection() {
   );
 }
 
+function divideProductsIntoSections(products) {
+  const sections = [];
+  let index = 0;
+  let sectionCount = 0;
+
+  while (index < products.length) {
+    const sectionType = sectionCount % 3; // Cycle through 0, 1, 2 for each section type
+    let items = [];
+    let count = sectionType === 2 ? 4 : 5; // Determine count based on section type
+
+    for (let i = index; i < index + count; i++) {
+      if (i < products.length) {
+        items.push(products[i]);
+      }
+    }
+
+    sections.push({
+      type: `type${sectionType + 1}`, // Assign a type string to help with class naming
+      items: items,
+    });
+
+    index += count;
+    sectionCount++;
+  }
+
+  return sections;
+}
+
+function ProductsGrid({products}) {
+  // Use the chunkProducts to organize products into rows of four
+  // const rows = chunkProducts(products);
+
+  return (
+    <div className="collection-grid">
+      {products.map((product, productIndex) => (
+        <div key={productIndex} className="product-row">
+          {console.log('this is a aproduct', product)}
+          <ProductItem
+            key={product.id}
+            product={product}
+            layoutType={`type${(productIndex % 3) + 1}`} // Optional: Pass layout type if needed
+            position={productIndex} // The index of the product within its row
+          />
+          {/* {row.map((product, productIndex) => (
+          ))} */}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 /**
  * @param {{
  *   product: ProductItemFragment;
  *   loading?: 'eager' | 'lazy';
  * }}
  */
-function ProductItem({product, loading}) {
+function ProductItem({product, loading, position, layoutType}) {
+  const variant = product?.variants?.nodes[0];
   const variantUrl = useVariantUrl(product.handle);
+
+  // Determine class for the large image based on the layout type and product position
+  const isLargeImage =
+    (layoutType === 'type1' && position === 2) ||
+    (layoutType === 'type2' && position === 0);
+  const imageClass = isLargeImage ? 'lg_img' : 'sm_img';
+
   return (
     <Link
-      className="product-item"
+      className={`collection-product ${isLargeImage ? 'lg_img' : 'sm_img'}`}
       key={product.id}
       prefetch="intent"
       to={variantUrl}
     >
+      {console.log('this is in product ONLY PRODUCT item', product)}
       {product.featuredImage && (
         <Image
+          className="collection-product-image"
           alt={product.featuredImage.altText || product.title}
-          aspectRatio="1/1"
           data={product.featuredImage}
-          loading={loading}
-          sizes="(min-width: 45em) 400px, 100vw"
+          loading={position < 10 ? 'eager' : 'lazy'}
         />
       )}
-      <h4>{product.title}</h4>
-      <small>
-        <Money data={product.priceRange.minVariantPrice} />
-      </small>
+      <div className="item-info-container">
+        <p className="small-product-title">{product?.title?.toUpperCase()}</p>
+        {/* <small> */}
+        <Money
+          className="product-price-col"
+          data={product.priceRange.minVariantPrice}
+        />
+        {/* </small> */}
+      </div>
     </Link>
   );
 }
