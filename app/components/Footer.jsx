@@ -34,32 +34,53 @@ export function Footer({footer: footerPromise, header, publicStoreDomain}) {
 function FooterMenu({menu, primaryDomainUrl, publicStoreDomain}) {
   return (
     <nav className="footer-menu" role="navigation">
-      {(menu || FALLBACK_FOOTER_MENU).items.map((item) => {
-        if (!item.url) return null;
-        // if the url is internal, we strip the domain
-        const url =
-          item.url.includes('myshopify.com') ||
-          item.url.includes(publicStoreDomain) ||
-          item.url.includes(primaryDomainUrl)
-            ? new URL(item.url).pathname
-            : item.url;
-        const isExternal = !url.startsWith('/');
-        return isExternal ? (
-          <a href={url} key={item.id} rel="noopener noreferrer" target="_blank">
-            {item.title}
-          </a>
-        ) : (
-          <NavLink
-            end
-            key={item.id}
-            prefetch="intent"
-            style={activeLinkStyle}
-            to={url}
-          >
-            {item.title}
-          </NavLink>
-        );
-      })}
+      <div className="footer-option-container">
+        <div className="footer-section-cont">
+          <NavLink className="footer-section-par">ABOUT US</NavLink>
+          <NavLink className="footer-section-par">CONTACT</NavLink>
+          <NavLink className="footer-section-par">WISHLIST</NavLink>
+          <NavLink className="footer-section-par">SIZE GUIDE</NavLink>
+          <NavLink className="footer-section-par">FAQ</NavLink>
+        </div>
+        <div className="footer-section-cont">
+          <NavLink className="footer-section-par">INSTAGRAM</NavLink>
+          <NavLink className="footer-section-par">FACEBOOK</NavLink>
+          <NavLink className="footer-section-par">TIK TOK</NavLink>
+        </div>
+        <div className="footer-section-cont">
+          {(menu || FALLBACK_FOOTER_MENU).items.map((item) => {
+            if (!item.url) return null;
+            // if the url is internal, we strip the domain
+            const url =
+              item.url.includes('myshopify.com') ||
+              item.url.includes(publicStoreDomain) ||
+              item.url.includes(primaryDomainUrl)
+                ? new URL(item.url).pathname
+                : item.url;
+            const isExternal = !url.startsWith('/');
+            return isExternal ? (
+              <a
+                href={url}
+                key={item.id}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                {item.title}
+              </a>
+            ) : (
+              <NavLink
+                end
+                key={item.id}
+                prefetch="intent"
+                style={activeLinkStyle}
+                to={url}
+              >
+                {item.title}
+              </NavLink>
+            );
+          })}
+        </div>
+      </div>
     </nav>
   );
 }
