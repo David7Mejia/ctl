@@ -2,7 +2,13 @@ import {defer} from '@shopify/remix-oxygen';
 import {Await, useLoaderData, Link} from '@remix-run/react';
 import {Suspense} from 'react';
 import {Image, Money} from '@shopify/hydrogen';
-
+import {SlideShow} from '~/components/SlideShow';
+import {FirstCollection} from '~/components/FirstCollection/index';
+import {SecondCollection} from '~/components/SecondCollection/index';
+import {ThirdCollection} from '~/components/ThirdCollection/index';
+import {HomeMessage} from '~/components/HomeMessage/index';
+import {Newsletter} from '~/components/Newsletter/index';
+import LandingVideo from '~/components/LandingVideo/index';
 /**
  * @type {MetaFunction}
  */
@@ -28,17 +34,40 @@ export async function loader(args) {
  * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
  * @param {LoaderFunctionArgs}
  */
+// async function loadCriticalData({context}) {
+//   const [{collections}] = await Promise.all([
+//     context.storefront.query(FEATURED_COLLECTION_QUERY),
+//     // Add other queries here, so that they are loaded in parallel
+//   ]);
+
+//   return {
+//     featuredCollection: collections.nodes[0],
+//   };
+
+// }
 async function loadCriticalData({context}) {
-  const [{collections}] = await Promise.all([
-    context.storefront.query(FEATURED_COLLECTION_QUERY),
-    // Add other queries here, so that they are loaded in parallel
-  ]);
+  const {storefront} = context;
+  console.log('hey this is the storefront', storefront);
+  try {
+    const [
+      featuredCollection, // Result of first query
+      {collections}, // Fetch Header Menu
+    ] = await Promise.all([
+      storefront.query(FEATURED_COLLECTION_QUERY, {
+        cache: storefront.CacheLong(),
+      }),
+      storefront.query(COLLECTIONS_QUERY),
+    ]);
 
-  return {
-    featuredCollection: collections.nodes[0],
-  };
+    return {
+      featuredCollection,
+      collections,
+    };
+  } catch (error) {
+    console.error('Error fetching critical data:', error);
+    throw new Error('Failed to fetch critical data');
+  }
 }
-
 /**
  * Load data for rendering content below the fold. This data is deferred and will be
  * fetched after the initial page load. If it's unavailable, the page should still 200.
@@ -63,10 +92,24 @@ export default function Homepage() {
   /** @type {LoaderReturnData} */
   const data = useLoaderData();
   return (
-    <div className="home">
-      <FeaturedCollection collection={data.featuredCollection} />
-      <RecommendedProducts products={data.recommendedProducts} />
-    </div>
+    // <div className="home">
+    //   <FeaturedCollection collection={data.featuredCollection} />
+    //   <RecommendedProducts products={data.recommendedProducts} />
+    // </div>
+    <section className="w-full gap-4">
+      {console.log('DATA:', data)}
+      <div className="index-holder grid-flow-row grid gap-2 gap-y-6 md:gap-4 lg:gap-6 grid-cols-1 sm:grid-cols-3">
+        <SlideShow collection={data?.collections} />
+        {/* <FeaturedCollection collection={data.featuredCollection} /> */}
+        {/* <RecommendedProducts products={data.recommendedProducts} /> */}
+        <FirstCollection featured={data?.doubleImage} />
+        <SecondCollection featured={data?.secondColSlider?.collection} />
+        <LandingVideo />
+        {/* <ThirdCollection featured={data?.thirdColSlider?.collection} /> */}
+        <HomeMessage />
+        <Newsletter />
+      </div>
+    </section>
   );
 }
 
@@ -156,7 +199,6 @@ const FEATURED_COLLECTION_QUERY = `#graphql
     }
   }
 `;
-
 const RECOMMENDED_PRODUCTS_QUERY = `#graphql
   fragment RecommendedProduct on Product {
     id
@@ -187,7 +229,139 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
     }
   }
 `;
+const COLLECTIONS_QUERY = `#graphql
+  query FeaturedCollections {
+    collections(first: 3) {
+      nodes {
+        id
+        title
+        handle
+        image {
+          altText
+          width
+          height
+          url
+        }
+      }
+    }
+  }
+`;
+const FEATURED_DOUBLE_IMAGE_QUERY = `#graphql
+fragment FeaturedProduct on Product {
+  id
+  title
+  images(first: 1, sortKey: POSITION) {
+      nodes {
+        id
+        url
+        altText
+        width
+        height
+    }
+  }
+  collections(first: 1) {
+    edges {
+      node {
+        handle
+        title
+      }
+    }
+  }
+  tags
+}
+query GetFeaturedProducts {
+  products(first: 2, query: "tag:collectionFeatured") {
+    edges {
+      node {
+        ...FeaturedProduct
+      }
+    }
+  }
+}
+`;
+const SECOND_COLLECTION_SLIDER_QUERY = `#graphql
+query SecondCollectionSlider {
+  collection(handle: "SWIMWEAR") {
+    title
+    image {
+      id
+      url
+    }
+    products(first: 20) {
+      nodes {
+        id
+        title
+        onlineStoreUrl
+        images(first: 20) {
+          nodes {
+            id
+            url
+          }
+        }
+         handle
+        priceRange {
+          minVariantPrice {
+            amount
+          }
+          maxVariantPrice {
+            amount
+          }
+        }
+        variants(first: 1) {
+      nodes {
+        selectedOptions {
+          name
+          value
+        }
+      }
+    }
+      }
+    }
 
+  }
+}
+`;
+const THIRD_COLLECTION_SLIDER_QUERY = `#graphql
+query ThirdCollectionSlider {
+  collection(handle: "dresses") {
+    title
+    image {
+      id
+      url
+    }
+    products(first: 20) {
+      nodes {
+        id
+        title
+        onlineStoreUrl
+        images(first: 20) {
+          nodes {
+            id
+            url
+          }
+        }
+         handle
+        priceRange {
+          minVariantPrice {
+            amount
+          }
+          maxVariantPrice {
+            amount
+          }
+        }
+        variants(first: 1) {
+      nodes {
+        selectedOptions {
+          name
+          value
+        }
+      }
+    }
+      }
+    }
+  }
+}
+`;
 /** @typedef {import('@shopify/remix-oxygen').LoaderFunctionArgs} LoaderFunctionArgs */
 /** @template T @typedef {import('@remix-run/react').MetaFunction<T>} MetaFunction */
 /** @typedef {import('storefrontapi.generated').FeaturedCollectionFragment} FeaturedCollectionFragment */
