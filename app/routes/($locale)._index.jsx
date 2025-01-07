@@ -51,17 +51,20 @@ async function loadCriticalData({context}) {
   try {
     const [
       featuredCollection, // Result of first query
-      {collections}, // Fetch Header Menu
+      {collections},
+      doubleImage
     ] = await Promise.all([
       storefront.query(FEATURED_COLLECTION_QUERY, {
         cache: storefront.CacheLong(),
       }),
       storefront.query(COLLECTIONS_QUERY),
+      storefront.query(FEATURED_DOUBLE_IMAGE_QUERY),
     ]);
 
     return {
       featuredCollection,
       collections,
+      doubleImage
     };
   } catch (error) {
     console.error('Error fetching critical data:', error);
