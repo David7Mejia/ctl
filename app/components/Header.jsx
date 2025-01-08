@@ -228,55 +228,55 @@ function CartBadge({count}) {
   const {open} = useAside();
 
   return (
-    <a
-      href="/cart"
-      onClick={(e) => {
-        e.preventDefault();
-        open('cart');
-        publish('cart_viewed', {
-          cart,
-          prevCart,
-          shop,
-          url: window.location.href || '',
-        });
-      }}
-    >
-      {' '}
-      Cart {count === null ? <span>&nbsp;</span> : count}
-    </a>
-    // <div>
-    //   <a
-    //     id="nav-bag"
-    //     className={cn('header-link bag-container', {
-    //       scrolled_header_link: useScroll !== 0,
-    //     })}
-    //     href="/cart"
-    //     onClick={(e) => {
-    //       e.preventDefault();
-    //       open('cart');
-    //       publish('cart_viewed', {
-    //         cart,
-    //         prevCart,
-    //         shop,
-    //         url: window.location.href || '',
-    //       });
-    //     }}
-    //   >
-    //     <div
-    //       className={cn('bag-count', {
-    //         not_home_bag_count: currentPath !== '/',
-    //       })}
-    //     >
-    //       {count}
-    //     </div>
-    //     <p
-    //       className={cn('nav-icon nav-bag', {
-    //         scrolled_bag_nav: useScroll !== 0,
-    //         not_home_bag: currentPath !== '/',
-    //       })}
-    //     ></p>
-    //   </a>
-    // </div>
+    // <a
+    //   href="/cart"
+    //   onClick={(e) => {
+    //     e.preventDefault();
+    //     open('cart');
+    //     publish('cart_viewed', {
+    //       cart,
+    //       prevCart,
+    //       shop,
+    //       url: window.location.href || '',
+    //     });
+    //   }}
+    // >
+    //   {' '}
+    //   Cart {count === null ? <span>&nbsp;</span> : count}
+    // </a>
+    <div>
+      <a
+        id="nav-bag"
+        className={cn('header-link bag-container', {
+          scrolled_header_link: useScroll !== 0,
+        })}
+        href="/cart"
+        onClick={(e) => {
+          e.preventDefault();
+          open('cart');
+          publish('cart_viewed', {
+            cart,
+            prevCart,
+            shop,
+            url: window.location.href || '',
+          });
+        }}
+      >
+        <div
+          className={cn('bag-count', {
+            not_home_bag_count: currentPath !== '/',
+          })}
+        >
+          {count}
+        </div>
+        <p
+          className={cn('nav-icon nav-bag', {
+            scrolled_bag_nav: useScroll !== 0,
+            not_home_bag: currentPath !== '/',
+          })}
+        ></p>
+      </a>
+    </div>
   );
   // <a href="#cart-aside">Cart {count}</a>;
   // const {publish, shop, cart, prevCart} = useAnalytics();

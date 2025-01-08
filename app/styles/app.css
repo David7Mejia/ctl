@@ -1067,6 +1067,8 @@ img {
 }
 
 .products-grid {
+  padding: 0 2rem;
+
   display: grid;
   /* max-height: 1128px; */
   height: 100%;
