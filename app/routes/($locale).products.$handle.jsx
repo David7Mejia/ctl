@@ -135,7 +135,7 @@ export default function Product() {
       <div className="product">
         <ProductImage image={selectedVariant?.image} product={product} />
         <div className="product-main">
-          <h1>{title}</h1>
+          <h1 className="product-page-title">{title?.toUpperCase()}</h1>
           <ProductPrice
             price={selectedVariant?.price}
             compareAtPrice={selectedVariant?.compareAtPrice}
@@ -147,9 +147,7 @@ export default function Product() {
           />
           <br />
           <br />
-          <p>
-            <strong>Description</strong>
-          </p>
+          <p className="product-description">DESCRIPTION</p>
           <br />
           <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
           <br />

@@ -39,7 +39,7 @@ export function ProductForm({productOptions, selectedVariant}) {
                   // that leads to a different url, we need to render it
                   // as an anchor tag
                   return (
-                    <Link
+                    <option
                       className="product-options-item"
                       key={option.name + name}
                       prefetch="intent"
@@ -54,7 +54,7 @@ export function ProductForm({productOptions, selectedVariant}) {
                       }}
                     >
                       <ProductOptionSwatch swatch={swatch} name={name} />
-                    </Link>
+                    </option>
                   );
                 } else {
                   // SEO
@@ -112,7 +112,7 @@ export function ProductForm({productOptions, selectedVariant}) {
             : []
         }
       >
-        {selectedVariant?.availableForSale ? 'Add to cart' : 'Sold out'}
+        {selectedVariant?.availableForSale ? 'ADD TO CART' : 'SOLD OUT'}
       </AddToCartButton>
     </div>
   );

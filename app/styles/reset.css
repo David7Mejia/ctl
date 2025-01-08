@@ -199,3 +199,8 @@ a {
 .cl-ul {
   margin-bottom: 100px;
 }
+
+.swiper-button-next,
+.swiper-button-prev {
+  display: none !important;
+}

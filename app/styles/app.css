@@ -18,7 +18,7 @@
   --cart-aside-summary-height-with-discount: 300px;
   --cart-aside-summary-height: 250px;
   --grid-item-width: 355px;
-  --header-height: 64px;
+  --header-height: 62px;
   --color-dark: #000;
   --color-light: #fff;
   font-family: 'Antarctica-Regular', 'Traviata', Arial;
@@ -60,10 +60,6 @@ aside {
   transition: transform 200ms ease-in-out;
   box-sizing: border-box;
 }
-
-.aside-config {
-}
-
 .aside-main {
   transform: translate(0, 0);
   height: 100%;
@@ -80,6 +76,7 @@ aside header {
   display: flex;
   height: var(--header-height);
   justify-content: space-between;
+  padding: 0 20px;
 }
 
 aside header h3 {
@@ -136,7 +133,7 @@ aside li {
   transition: opacity 400ms ease-in-out;
   transition: opacity 400ms;
   visibility: hidden;
-  z-index: 10;
+  z-index: 900;
 }
 
 .overlay .close-outside {
@@ -161,14 +158,34 @@ aside li {
   width: 100%;
 }
 
-.overlay:target {
+.overlay.expanded {
   opacity: 1;
   pointer-events: auto;
   visibility: visible;
 }
 /* reveal aside */
-.overlay:target aside {
+.overlay.expanded aside {
   transform: translateX(calc(var(--aside-width) * -1));
+}
+
+button.reset {
+  border: 0;
+  background: inherit;
+  font-size: inherit;
+}
+
+button.reset > * {
+  margin: 0;
+}
+
+button.reset:not(:has(> *)) {
+  height: 1.5rem;
+  line-height: 1.5rem;
+}
+
+button.reset:hover:not(:has(> *)) {
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 /*
@@ -416,7 +433,7 @@ img {
   align-items: center;
   background: #fff;
   display: flex;
-  height: 62px;
+  height: var(--header-height);
   max-height: 64px;
   padding: 0 2rem;
   position: sticky;

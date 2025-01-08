@@ -91,7 +91,7 @@ export function HeaderMenu({
       {viewport === 'mobile' && (
         <NavLink
           end
-          onClick={closeAside}
+          onClick={close}
           prefetch="intent"
           // style={activeLinkStyle}
           to="/"
@@ -118,7 +118,7 @@ export function HeaderMenu({
             })}
             end
             key={item.id}
-            onClick={closeAside}
+            onClick={close}
             prefetch="intent"
             // style={activeLinkStyle}
             to={url}
@@ -196,12 +196,12 @@ function HeaderMenuMobileToggle() {
 }
 
 function SearchToggle() {
-  // const {open} = useAside();
-  // return (
-  //   <button className="reset" onClick={() => open('search')}>
-  //     Search
-  //   </button>
-  // );
+  const {open} = useAside();
+  return (
+    <button className="reset" onClick={() => open('search')}>
+      Search
+    </button>
+  );
   const location = useLocation();
   const currentPath = location.pathname;
   const useScroll = useScrollY();
@@ -224,34 +224,63 @@ function CartBadge({count}) {
   const location = useLocation();
   const currentPath = location.pathname;
   const useScroll = useScrollY();
+  const {publish, shop, cart, prevCart} = useAnalytics();
+  const {open} = useAside();
+
   return (
-    <div>
-      <a
-        id="nav-bag"
-        className={cn('header-link bag-container', {
-          scrolled_header_link: useScroll !== 0,
-        })}
-        href="#cart-aside"
-      >
-        {/* <div
-          className={cn('bag-count', {
-            not_home_bag_count: currentPath !== '/',
-          })}
-        >
-          {count}
-        </div> */}
-        <p
-          className={cn('nav-icon nav-bag', {
-            scrolled_bag_nav: useScroll !== 0,
-            not_home_bag: currentPath !== '/',
-          })}
-        ></p>
-      </a>
-    </div>
+    <a
+      href="/cart"
+      onClick={(e) => {
+        e.preventDefault();
+        open('cart');
+        publish('cart_viewed', {
+          cart,
+          prevCart,
+          shop,
+          url: window.location.href || '',
+        });
+      }}
+    >
+      {' '}
+      Cart {count === null ? <span>&nbsp;</span> : count}
+    </a>
+    // <div>
+    //   <a
+    //     id="nav-bag"
+    //     className={cn('header-link bag-container', {
+    //       scrolled_header_link: useScroll !== 0,
+    //     })}
+    //     href="/cart"
+    //     onClick={(e) => {
+    //       e.preventDefault();
+    //       open('cart');
+    //       publish('cart_viewed', {
+    //         cart,
+    //         prevCart,
+    //         shop,
+    //         url: window.location.href || '',
+    //       });
+    //     }}
+    //   >
+    //     <div
+    //       className={cn('bag-count', {
+    //         not_home_bag_count: currentPath !== '/',
+    //       })}
+    //     >
+    //       {count}
+    //     </div>
+    //     <p
+    //       className={cn('nav-icon nav-bag', {
+    //         scrolled_bag_nav: useScroll !== 0,
+    //         not_home_bag: currentPath !== '/',
+    //       })}
+    //     ></p>
+    //   </a>
+    // </div>
   );
   // <a href="#cart-aside">Cart {count}</a>;
-  // const {open} = useAside();
   // const {publish, shop, cart, prevCart} = useAnalytics();
+  // const {open} = useAside();
 
   // return (
   //   <a
