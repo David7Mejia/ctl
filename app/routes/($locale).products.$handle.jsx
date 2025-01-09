@@ -17,6 +17,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import useWidth from '../Hooks/useWidth';
 import {Link} from '@remix-run/react';
+import '../styles/ProductPage.css';
 /**
  * @type {MetaFunction<typeof loader>}
  */

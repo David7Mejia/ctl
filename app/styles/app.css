@@ -353,10 +353,6 @@ main {
   transform: translate(0) !important;
 }
 
-.product_main_layout .path-count-holder {
-  /* margin-left: 5rem; */
-}
-
 .not_home_search {
   background-image: url('../../public/search-black.svg') !important;
 }
@@ -1168,6 +1164,39 @@ img {
 * routes/collections._index.tsx
 * --------------------------------------------------
 */
+.collection-path-dash {
+  margin: 0;
+  padding: 0 0.5rem;
+  font-size: 12px;
+}
+.path-count-holder {
+  display: flex !important;
+  margin: 100px 0 0 0;
+  padding: 1.5rem 2rem;
+  justify-content: space-between;
+  font-size: 12px;
+  font-family: 'Antarctica-Light', Arial, Helvetica, sans-serif;
+  font-weight: 300;
+  letter-spacing: 2.16px;
+}
+
+.collection-path-name {
+  color: #ccc !important;
+}
+
+.collection-path-name::hover {
+  color: black;
+}
+
+.collection-path-items {
+  font-size: 12px;
+  font-family: 'Antarctica-Light', Arial, Helvetica, sans-serif;
+  font-weight: 500;
+  letter-spacing: 2.16px;
+  margin: 0;
+  color: black;
+  text-decoration: none;
+}
 .collections-grid {
   display: grid;
   grid-gap: 1.5rem;

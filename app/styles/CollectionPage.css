@@ -18,9 +18,9 @@
   font-size: 12px;
 }
 .path-count-holder {
+  display: flex !important;
   margin: 100px 0 0 0;
   padding: 1.5rem 2rem;
-  display: flex;
   justify-content: space-between;
   font-size: 12px;
   font-family: 'Antarctica-Light', Arial, Helvetica, sans-serif;

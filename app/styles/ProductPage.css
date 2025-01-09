@@ -1,3 +1,18 @@
+.collection-path-holder {
+  display: flex;
+  align-items: center;
+}
+
+.path-count-holder {
+  display: flex !important;
+  margin: 100px 0 0 0;
+  padding: 1.5rem 2rem;
+  justify-content: space-between;
+  font-size: 12px;
+  font-family: 'Antarctica-Light', Arial, Helvetica, sans-serif;
+  font-weight: 300;
+  letter-spacing: 2.16px;
+}
 .product-page-container {
   display: flex;
   position: relative;
