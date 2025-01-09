@@ -78,7 +78,7 @@ function CartAside({cart}) {
 function SearchAside() {
   const queriesDatalistId = useId();
   return (
-    <Aside type="search" heading="SEARCH">
+    <Aside type="search" heading="SEARCH OUR CATALOG">
       <div className="predictive-search">
         <br />
         <SearchFormPredictive>
@@ -142,8 +142,8 @@ function SearchAside() {
                     onClick={closeSearch}
                     to={`${SEARCH_ENDPOINT}?q=${term.current}`}
                   >
-                    <p>
-                      View all results for <q>{term.current}</q>
+                    <p className="predictive-search-view-all">
+                      View All Results For <q>{term.current}</q>
                       &nbsp; →
                     </p>
                   </Link>

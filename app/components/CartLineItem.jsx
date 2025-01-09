@@ -23,11 +23,11 @@ export function CartLineItem({layout, line}) {
       {image && (
         <Image
           alt={title}
-          aspectRatio="1/1"
+          // aspectRatio="1/1"
           data={image}
-          height={100}
+          height={200}
           loading="lazy"
-          width={100}
+          width={150}
         />
       )}
 
@@ -41,20 +41,18 @@ export function CartLineItem({layout, line}) {
             }
           }}
         >
-          <p>
-            <strong>{product.title}</strong>
-          </p>
+          <p className="cart-product-name">{product.title?.toUpperCase()}</p>
         </Link>
         <ProductPrice price={line?.cost?.totalAmount} />
-        <ul>
+        <div>
           {selectedOptions.map((option) => (
-            <li key={option.name}>
-              <small>
-                {option.name}: {option.value}
-              </small>
-            </li>
+            // <li key={option.name}>
+            <small key={option.name}>
+              {option.name}: {option.value}
+            </small>
+            // </li>
           ))}
-        </ul>
+        </div>
         <CartLineQuantity line={line} />
       </div>
     </li>
@@ -82,6 +80,7 @@ function CartLineQuantity({line}) {
           disabled={quantity <= 1 || !!isOptimistic}
           name="decrease-quantity"
           value={prevQuantity}
+          className="aside-cart-decrease"
         >
           <span>&#8722; </span>
         </button>
@@ -89,6 +88,7 @@ function CartLineQuantity({line}) {
       &nbsp;
       <CartLineUpdateButton lines={[{id: lineId, quantity: nextQuantity}]}>
         <button
+          className="aside-cart-increase"
           aria-label="Increase quantity"
           name="increase-quantity"
           value={nextQuantity}
@@ -119,7 +119,7 @@ function CartLineRemoveButton({lineIds, disabled}) {
       action={CartForm.ACTIONS.LinesRemove}
       inputs={{lineIds}}
     >
-      <button disabled={disabled} type="submit">
+      <button disabled={disabled} type="submit" className="aside-cart-remove">
         Remove
       </button>
     </CartForm>

@@ -76,11 +76,11 @@ function SearchResultsPredictiveArticles({term, articles, closeSearch}) {
                     alt={article.image.altText ?? ''}
                     src={article.image.url}
                     width={50}
-                    height={50}
+                    height={200}
                   />
                 )}
                 <div>
-                  <span>{article.title}</span>
+                  <span>{article.title.toUpperCase()}</span>
                 </div>
               </Link>
             </li>
@@ -116,7 +116,7 @@ function SearchResultsPredictiveCollections({term, collections, closeSearch}) {
                     alt={collection.image.altText ?? ''}
                     src={collection.image.url}
                     width={50}
-                    height={50}
+                    height={200}
                   />
                 )}
                 <div>
@@ -189,12 +189,12 @@ function SearchResultsPredictiveProducts({term, products, closeSearch}) {
                   <Image
                     alt={image.altText ?? ''}
                     src={image.url}
-                    width={50}
-                    height={50}
+                    width={150}
+                    height={200}
                   />
                 )}
-                <div>
-                  <p>{product.title}</p>
+                <div className="search-aside-item-list">
+                  <p>{product.title?.toUpperCase()}</p>
                   <small>{price && <Money data={price} />}</small>
                 </div>
               </Link>

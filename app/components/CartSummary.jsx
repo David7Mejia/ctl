@@ -36,7 +36,7 @@ function CartCheckoutActions({checkoutUrl}) {
   return (
     <div>
       <a href={checkoutUrl} target="_self">
-        <p>Continue to Checkout &rarr;</p>
+        <p className="aside-cont-to-checkout">Continue to Checkout &rarr;</p>
       </a>
       <br />
     </div>
@@ -73,9 +73,16 @@ function CartDiscounts({discountCodes}) {
       {/* Show an input to apply a discount */}
       <UpdateDiscountForm discountCodes={codes}>
         <div>
-          <input type="text" name="discountCode" placeholder="Discount code" />
+          <input
+            className="aside-code-input"
+            type="text"
+            name="discountCode"
+            placeholder="Discount code"
+          />
           &nbsp;
-          <button type="submit">Apply</button>
+          <button className="cart-aside-apply" type="submit">
+            Apply
+          </button>
         </div>
       </UpdateDiscountForm>
     </div>
@@ -152,9 +159,12 @@ function CartGiftCard({giftCardCodes}) {
             name="giftCardCode"
             placeholder="Gift card code"
             ref={giftCardCodeInput}
+            className="aside-code-input"
           />
           &nbsp;
-          <button type="submit">Apply</button>
+          <button type="submit" className="cart-aside-apply">
+            Apply
+          </button>
         </div>
       </UpdateGiftCardForm>
     </div>
