@@ -1,9 +1,10 @@
-import {Await, Link} from '@remix-run/react';
+import {Await, Link, useLocation} from '@remix-run/react';
 import {Suspense, useId} from 'react';
 import {Aside} from '~/components/Aside';
 import {Footer} from '~/components/Footer';
 import {Header, HeaderMenu} from '~/components/Header';
 import {CartMain} from '~/components/CartMain';
+import cn from 'classnames';
 import {AnBar} from '~/components/AnBar';
 import {
   SEARCH_ENDPOINT,
@@ -22,6 +23,10 @@ export function PageLayout({
   isLoggedIn,
   publicStoreDomain,
 }) {
+  const location = useLocation();
+  const currentPath = location.pathname;
+  const isProductPath = /^\/products\/[^\/]+/.test(currentPath);
+
   return (
     <Aside.Provider>
       <CartAside cart={cart} />
@@ -36,7 +41,14 @@ export function PageLayout({
           publicStoreDomain={publicStoreDomain}
         />
       )}
-      <main>{children}</main>
+      <main
+        className={cn('main', {
+          not_home_main: currentPath !== '/' && !isProductPath, // Not home and not a product page
+          product_main_layout: isProductPath, // Product page
+        })}
+      >
+        {children}
+      </main>
       <Footer
         footer={footer}
         header={header}

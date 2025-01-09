@@ -1,9 +1,11 @@
+.collections {
+}
 .collections-grid {
 }
 
 .collection-item {
   display: flex;
-  height: 600px;
+  height: 550px !important;
   background-color: rgba(0, 0, 0, 0.2); /* Red semi-transparent background */
 }
 

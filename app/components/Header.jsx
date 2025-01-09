@@ -197,14 +197,19 @@ function HeaderMenuMobileToggle() {
 
 function SearchToggle() {
   const {open} = useAside();
-  return (
-    <button className="reset" onClick={() => open('search')}>
-      Search
-    </button>
-  );
   const location = useLocation();
   const currentPath = location.pathname;
   const useScroll = useScrollY();
+  return (
+    <a
+      className={cn('header-link nav-search nav-icon', {
+        scrolled_header_link: useScroll !== 0,
+        scrolled_search_nav: useScroll !== 0,
+        not_home_search: currentPath !== '/',
+      })}
+      onClick={() => open('search')}
+    ></a>
+  );
   return (
     <a
       className={cn('header-link nav-search nav-icon', {

@@ -2,6 +2,7 @@ import {useLoaderData, Link} from '@remix-run/react';
 import {defer} from '@shopify/remix-oxygen';
 import {getPaginationVariables, Image} from '@shopify/hydrogen';
 import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
+import '../styles/Collections.css';
 
 /**
  * @param {LoaderFunctionArgs} args
@@ -52,18 +53,21 @@ export default function Collections() {
 
   return (
     <div className="collections">
-      <p className="all-collections-title">All Collections</p>
+      <p className="all-collections-title">COLLECTIONS</p>
 
       <PaginatedResourceSection
         connection={collections}
         resourcesClassName="collections-grid"
       >
         {({node: collection, index}) => (
-          <CollectionItem
-            key={collection.id}
-            collection={collection}
-            index={index}
-          />
+          <div key={collection.id} className="collection-item-container">
+            <CollectionItem 
+              key={collection.id}
+              collection={collection}
+              index={index}
+            />
+            <div className="collection-overlay"></div>
+          </div>
         )}
       </PaginatedResourceSection>
     </div>
