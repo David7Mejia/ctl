@@ -40,11 +40,12 @@ export default function SearchPage() {
 
   return (
     <div className="search">
-      <h1>Search</h1>
-      <SearchForm>
+      <p className="search-page-title">SEARCH</p>
+      <SearchForm className='search-page-form'>
         {({inputRef}) => (
           <>
             <input
+              className="search-input-page"
               defaultValue={term}
               name="q"
               placeholder="Search…"

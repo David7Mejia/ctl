@@ -1,6 +1,7 @@
 import {Link} from '@remix-run/react';
 import {Image, Money, Pagination} from '@shopify/hydrogen';
 import {urlWithTrackingParams} from '~/lib/search';
+import '../styles/CollectionPage.css';
 
 /**
  * @param {Omit<SearchResultsProps, 'error' | 'type'>}
@@ -94,54 +95,71 @@ function SearchResultsProducts({term, products}) {
 
   return (
     <div className="search-result">
-      <h2>Products</h2>
-      <Pagination connection={products}>
-        {({nodes, isLoading, NextLink, PreviousLink}) => {
-          const ItemsMarkup = nodes.map((product) => {
-            const productUrl = urlWithTrackingParams({
-              baseUrl: `/products/${product.handle}`,
-              trackingParams: product.trackingParameters,
-              term,
+      <div>
+        {/* <h2>Products</h2> */}
+        <Pagination connection={products} className="testin">
+          {({nodes, isLoading, NextLink, PreviousLink}) => {
+            const ItemsMarkup = nodes.map((product) => {
+              const productUrl = urlWithTrackingParams({
+                baseUrl: `/products/${product.handle}`,
+                trackingParams: product.trackingParameters,
+                term,
+              });
+
+              const price = product?.selectedOrFirstAvailableVariant?.price;
+              const image = product?.selectedOrFirstAvailableVariant?.image;
+
+              return (
+                <div className="search-results-item" key={product.id}>
+                  <Link
+                    className="collection-product"
+                    prefetch="intent"
+                    to={productUrl}
+                  >
+                    {image && (
+                      <Image
+                        className="collection-product-image"
+                        data={image}
+                        alt={product.title}
+                        width={500}
+                      />
+                    )}
+                    <div className="search-page-item-results item-info-container">
+                      <p className="small-product-title">
+                        {product.title?.toUpperCase()}
+                      </p>
+                      {/* <small> */}
+                      {price && (
+                        <Money className="product-price-col" data={price} />
+                      )}
+                      {/* </small> */}
+                    </div>
+                  </Link>
+                </div>
+              );
             });
 
-            const price = product?.selectedOrFirstAvailableVariant?.price;
-            const image = product?.selectedOrFirstAvailableVariant?.image;
-
             return (
-              <div className="search-results-item" key={product.id}>
-                <Link prefetch="intent" to={productUrl}>
-                  {image && (
-                    <Image data={image} alt={product.title} width={50} />
-                  )}
-                  <div>
-                    <p>{product.title}</p>
-                    <small>{price && <Money data={price} />}</small>
-                  </div>
-                </Link>
+              <div>
+                <div>
+                  <PreviousLink>
+                    {isLoading ? 'Loading...' : <span>↑ Load previous</span>}
+                  </PreviousLink>
+                </div>
+                <div className="products-grid">
+                  {ItemsMarkup}
+                  <br />
+                </div>
+                <div>
+                  <NextLink>
+                    {isLoading ? 'Loading...' : <span>Load more ↓</span>}
+                  </NextLink>
+                </div>
               </div>
             );
-          });
-
-          return (
-            <div>
-              <div>
-                <PreviousLink>
-                  {isLoading ? 'Loading...' : <span>↑ Load previous</span>}
-                </PreviousLink>
-              </div>
-              <div>
-                {ItemsMarkup}
-                <br />
-              </div>
-              <div>
-                <NextLink>
-                  {isLoading ? 'Loading...' : <span>Load more ↓</span>}
-                </NextLink>
-              </div>
-            </div>
-          );
-        }}
-      </Pagination>
+          }}
+        </Pagination>
+      </div>
       <br />
     </div>
   );

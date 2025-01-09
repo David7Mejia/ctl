@@ -104,13 +104,24 @@ export default function Collection() {
         connection={collection.products}
         resourcesClassName="products-grid"
       >
-        {({node: product, index}) => (
+        {/* {({node: product, index}) => (
           <ProductItem
             key={product.id}
             product={product}
+            position={index} // The index of the product within its row
             loading={index < 8 ? 'eager' : undefined}
+            layoutType={`type${(index % 3) + 1}`} // Optional: Pass layout type if needed
           />
-        )}
+        )} */}
+
+        {({node: product, index}) => {
+          // console.log('Nodes passed to ProductsGrid:', node);
+          return (
+            <ProductsGrid
+              products={Array.isArray(product) ? product : [product]}
+            />
+          );
+        }}
       </PaginatedResourceSection>
       <Analytics.CollectionView
         data={{
@@ -124,43 +135,19 @@ export default function Collection() {
   );
 }
 
-function divideProductsIntoSections(products) {
-  const sections = [];
-  let index = 0;
-  let sectionCount = 0;
-
-  while (index < products.length) {
-    const sectionType = sectionCount % 3; // Cycle through 0, 1, 2 for each section type
-    let items = [];
-    let count = sectionType === 2 ? 4 : 5; // Determine count based on section type
-
-    for (let i = index; i < index + count; i++) {
-      if (i < products.length) {
-        items.push(products[i]);
-      }
-    }
-
-    sections.push({
-      type: `type${sectionType + 1}`, // Assign a type string to help with class naming
-      items: items,
-    });
-
-    index += count;
-    sectionCount++;
-  }
-
-  return sections;
-}
-
 function ProductsGrid({products}) {
+  console.log('damn these product', products);
   // Use the chunkProducts to organize products into rows of four
   // const rows = chunkProducts(products);
 
   return (
-    <div className="collection-grid">
-      {products.map((product, productIndex) => (
+    <div className="collections-grid">
+      {products?.map((product, productIndex) => (
         <div key={productIndex} className="product-row">
-          {console.log('this is a aproduct', product)}
+          {console.log(
+            '********************************************SS',
+            productIndex,
+          )}
           <ProductItem
             key={product.id}
             product={product}
@@ -190,10 +177,20 @@ function ProductItem({product, loading, position, layoutType}) {
     (layoutType === 'type1' && position === 2) ||
     (layoutType === 'type2' && position === 0);
   const imageClass = isLargeImage ? 'lg_img' : 'sm_img';
+  console.log(
+    'layoutType:',
+    layoutType,
+    'position:',
+    position,
+    'isLargeImage:',
+    isLargeImage,
+  );
 
   return (
     <Link
-      className={`collection-product ${isLargeImage ? 'lg_img' : 'sm_img'}`}
+      className={`collection-product ${isLargeImage ? 'lg_img' : 'sm_img'}
+
+        `}
       key={product.id}
       prefetch="intent"
       to={variantUrl}
