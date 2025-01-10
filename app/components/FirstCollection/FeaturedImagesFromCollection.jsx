@@ -7,7 +7,6 @@ const FeaturedImagesFromCollection = ({featured}) => {
   /** @type {LoaderReturnData} */
 
   let {doubleImageData} = useLoaderData();
-  console.log('double image data ', featured);
   return (
     <div className="featured-images-container">
       {/* {featured?.products?.nodes?.map((el, i) => (

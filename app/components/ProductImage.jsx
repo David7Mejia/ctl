@@ -14,7 +14,6 @@ import {isElementAccessExpression} from 'typescript';
  */
 export function ProductImage({image, product}) {
   const width = useWidth();
-  console.log('this is the image', product);
   if (!image) {
     return <div className="product-image" />;
   }

@@ -47,7 +47,6 @@ export async function loader(args) {
 // }
 async function loadCriticalData({context}) {
   const {storefront} = context;
-  console.log('hey this is the storefront', storefront);
   try {
     const [
       featuredCollection, // Result of first query
@@ -106,7 +105,6 @@ export default function Homepage() {
     //   <RecommendedProducts products={data.recommendedProducts} />
     // </div>
     <section className="w-full gap-4">
-      {console.log('DATA:', data)}
       <div className="index-holder grid-flow-row grid gap-2 gap-y-6 md:gap-4 lg:gap-6 grid-cols-1 sm:grid-cols-3">
         <SlideShow collection={data?.collections} />
         {/* <FeaturedCollection collection={data.featuredCollection} /> */}

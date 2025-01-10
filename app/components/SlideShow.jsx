@@ -21,7 +21,6 @@ export const SlideShow = ({collection}) => {
       speed={3000}
       modules={[Autoplay]}
     >
-      {console.log('collection nodes', collections)}
       {collections?.map((el, i) => (
         <SwiperSlide key={i} className="swiper-slide-container">
           {

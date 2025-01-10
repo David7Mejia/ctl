@@ -31,7 +31,6 @@ const HomeSlider = ({featured}) => {
   // console.log('SHOEEEEEEES', products);
 
   const swiper = useSwiper();
-  console.log('this is the width', width);
   return (
     <Swiper
       className="home-slider-container"

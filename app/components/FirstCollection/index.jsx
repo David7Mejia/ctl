@@ -7,7 +7,6 @@ export const FirstCollection = ({featured}) => {
   return (
     <>
       <FeaturedImagesFromCollection featured={featured} />
-      {console.log('THIS IS THE FEATUED FIRST COLLECTION', featured)}
       <div className="first-collection-container">
         <div className="first-collection-banner">
           <Link className="first-collection-banner-title">

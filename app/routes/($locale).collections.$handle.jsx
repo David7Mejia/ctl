@@ -136,7 +136,6 @@ export default function Collection() {
 }
 
 function ProductsGrid({products}) {
-  console.log('damn these product', products);
   // Use the chunkProducts to organize products into rows of four
   // const rows = chunkProducts(products);
 
@@ -144,10 +143,7 @@ function ProductsGrid({products}) {
     <div className="collections-grid">
       {products?.map((product, productIndex) => (
         <div key={productIndex} className="product-row">
-          {console.log(
-            '********************************************SS',
-            productIndex,
-          )}
+
           <ProductItem
             key={product.id}
             product={product}
@@ -177,14 +173,7 @@ function ProductItem({product, loading, position, layoutType}) {
     (layoutType === 'type1' && position === 2) ||
     (layoutType === 'type2' && position === 0);
   const imageClass = isLargeImage ? 'lg_img' : 'sm_img';
-  console.log(
-    'layoutType:',
-    layoutType,
-    'position:',
-    position,
-    'isLargeImage:',
-    isLargeImage,
-  );
+
 
   return (
     <Link
@@ -195,7 +184,6 @@ function ProductItem({product, loading, position, layoutType}) {
       prefetch="intent"
       to={variantUrl}
     >
-      {console.log('this is in product ONLY PRODUCT item', product)}
       {product.featuredImage && (
         <Image
           className="collection-product-image"
