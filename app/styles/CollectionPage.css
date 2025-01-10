@@ -8,7 +8,13 @@
   display: flex;
   align-items: center;
 }
+.collection-title-overlay {
+  position: absolute;
+  color: white;
+background-color: black;
+padding: 10px;
 
+}
 .product-row {
   flex: 0 0 24%;
 }

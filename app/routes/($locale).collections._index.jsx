@@ -61,7 +61,7 @@ export default function Collections() {
       >
         {({node: collection, index}) => (
           <div key={collection.id} className="collection-item-container">
-            <CollectionItem 
+            <CollectionItem
               key={collection.id}
               collection={collection}
               index={index}
@@ -96,7 +96,9 @@ function CollectionItem({collection, index}) {
           loading={index < 3 ? 'eager' : undefined}
         />
       )}
-      <h5>{collection.title}</h5>
+      <p className="collection-title-overlay">
+        {collection.title.toUpperCase()}
+      </p>
     </Link>
   );
 }

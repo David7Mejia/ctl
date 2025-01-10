@@ -7,6 +7,9 @@
   display: flex;
   height: 550px !important;
   background-color: rgba(0, 0, 0, 0.2); /* Red semi-transparent background */
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .collection-item img {
