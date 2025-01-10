@@ -1,5 +1,6 @@
 import {createContext, useContext, useEffect, useState} from 'react';
-
+import cn from 'classnames';
+import useWidth from '../Hooks/useWidth';
 /**
  * A side bar component with Overlay
  * @example
@@ -18,6 +19,7 @@ import {createContext, useContext, useEffect, useState} from 'react';
 export function Aside({children, heading, type}) {
   const {type: activeType, close} = useAside();
   const expanded = type === activeType;
+  const width = useWidth();
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -45,11 +47,13 @@ export function Aside({children, heading, type}) {
       <button className="close-outside" onClick={close} />
       <aside>
         <header className="aside-header-container">
-          {/* <button
-            className="close reset"
+          <button
+            className={cn('close_btn close reset', {
+              mobile_close_aside_btn: width <= 749,
+            })}
             onClick={close}
             aria-label="Close"
-            ></button> */}
+          ></button>
           <h3 className="aside-heading">{heading}</h3>
         </header>
         <main className="not_home_main aside_main">

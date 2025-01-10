@@ -633,9 +633,12 @@ img {
 
 .bag-count {
   display: flex;
+  color: white;
   margin-right: 5px;
 }
-
+.scrolled_bag_count {
+  color: black;
+}
 /*
 * --------------------------------------------------
 * components/Footer
@@ -1703,6 +1706,10 @@ img {
 * --------------------------------------------------
 */
 
+.close_btn {
+  display: none;
+}
+
 /* .collection-product {
   display: flex;
   flex-direction: column;
@@ -1721,6 +1728,11 @@ img {
   }
 }
 @media screen and (max-width: 749px) {
+  .mobile_close_aside_btn {
+    display: flex;
+    left: 2rem;
+    position: absolute;
+  }
   .header {
     padding: 0 1rem;
   }

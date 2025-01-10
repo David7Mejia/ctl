@@ -177,12 +177,17 @@ function HeaderMenuMobileToggle() {
   //   </button>
   // );
 
+  const {open} = useAside();
   const location = useLocation();
   const currentPath = location.pathname;
   const useScroll = useScrollY();
 
   return (
-    <a className="header-menu-mobile-toggle" href="#mobile-menu-aside">
+    <a
+      className="header-menu-mobile-toggle"
+      href="#mobile-menu-aside"
+      onClick={() => open('mobile')}
+    >
       <h3
         className={cn('mobile-hamburger', {
           scrolled_ham: useScroll !== 0,
@@ -269,6 +274,7 @@ function CartBadge({count}) {
       >
         <div
           className={cn('bag-count', {
+            scrolled_bag_count: useScroll !== 0,
             not_home_bag_count: currentPath !== '/',
           })}
         >
